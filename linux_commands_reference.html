@@ -1,0 +1,391 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .shell {
+    font-family: 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #e6edf3;
+    padding: 0 0 40px 0;
+    min-height: 100vh;
+  }
+
+  .topbar {
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .dots { display: flex; gap: 6px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #febc2e; }
+  .dot.g { background: #28c840; }
+
+  .topbar-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    color: #7d8590;
+    margin-left: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .prompt-line {
+    color: #3fb950;
+    font-size: 12px;
+    margin-left: auto;
+  }
+
+  .prompt-line span { color: #58a6ff; }
+
+  .hero {
+    padding: 36px 28px 24px;
+    border-bottom: 1px solid #21262d;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: #e6edf3;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .hero h1 .hl { color: #3fb950; }
+
+  .hero p {
+    font-size: 12px;
+    color: #7d8590;
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+  }
+
+  .sections { padding: 0 28px; }
+
+  .section { margin-top: 32px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #21262d;
+  }
+
+  .section-icon {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .icon-blue  { background: #1f3a5f; color: #58a6ff; }
+  .icon-green { background: #1b3a2a; color: #3fb950; }
+  .icon-amber { background: #3a2a1b; color: #d29922; }
+  .icon-red   { background: #3a1b1b; color: #f85149; }
+  .icon-teal  { background: #1b2f38; color: #39c5cf; }
+  .icon-purple{ background: #2d1b3a; color: #bc8cff; }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #e6edf3;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .cmd-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  @media (max-width: 520px) { .cmd-grid { grid-template-columns: 1fr; } }
+
+  .cmd-card {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 12px 14px;
+    transition: border-color 0.15s;
+    cursor: default;
+  }
+
+  .cmd-card:hover { border-color: #30363d; }
+
+  .cmd-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #79c0ff;
+    letter-spacing: 0.01em;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .cmd-name::before {
+    content: '$';
+    color: #3fb950;
+    font-weight: 400;
+    font-size: 12px;
+  }
+
+  .cmd-desc {
+    font-size: 11px;
+    color: #7d8590;
+    line-height: 1.5;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .cmd-example {
+    margin-top: 6px;
+    font-size: 10px;
+    color: #d29922;
+    padding: 3px 6px;
+    background: #1c1a13;
+    border-radius: 3px;
+    display: inline-block;
+    border: 1px solid #2d2513;
+  }
+
+  .footer {
+    margin: 40px 28px 0;
+    padding-top: 20px;
+    border-top: 1px solid #21262d;
+    font-size: 11px;
+    color: #3d444d;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 13px;
+    background: #3fb950;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+</style>
+
+<div class="shell">
+  <div class="topbar">
+    <div class="dots">
+      <div class="dot r"></div>
+      <div class="dot y"></div>
+      <div class="dot g"></div>
+    </div>
+    <div class="topbar-title">linux-commands.sh — bash</div>
+    <div class="prompt-line">user<span>@</span>machine:~</div>
+  </div>
+
+  <div class="hero">
+    <h1>Linux Command <span class="hl">Reference</span></h1>
+    <p># essential commands — categorized &amp; annotated</p>
+  </div>
+
+  <div class="sections">
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon icon-blue">01</span>
+        <span class="section-title">File &amp; Directory Management</span>
+      </div>
+      <div class="cmd-grid">
+        <div class="cmd-card">
+          <div class="cmd-name">ls</div>
+          <div class="cmd-desc">Lists files and directories in current folder</div>
+          <div class="cmd-example">ls -la</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">cd [dir]</div>
+          <div class="cmd-desc">Changes your current working directory</div>
+          <div class="cmd-example">cd ~/projects</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">pwd</div>
+          <div class="cmd-desc">Prints the full path of your current directory</div>
+          <div class="cmd-example">pwd</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">mkdir [name]</div>
+          <div class="cmd-desc">Creates a new directory</div>
+          <div class="cmd-example">mkdir -p src/utils</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">rm [file]</div>
+          <div class="cmd-desc">Removes a file; use -r to delete directories</div>
+          <div class="cmd-example">rm -r dist/</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">cp / mv</div>
+          <div class="cmd-desc">Copy or move/rename files and directories</div>
+          <div class="cmd-example">mv old.txt new.txt</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">touch [file]</div>
+          <div class="cmd-desc">Creates a new empty file instantly</div>
+          <div class="cmd-example">touch index.js</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon icon-green">02</span>
+        <span class="section-title">Viewing &amp; Editing Files</span>
+      </div>
+      <div class="cmd-grid">
+        <div class="cmd-card">
+          <div class="cmd-name">cat [file]</div>
+          <div class="cmd-desc">Dumps entire file contents to the terminal</div>
+          <div class="cmd-example">cat config.yaml</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">less [file]</div>
+          <div class="cmd-desc">Page through large files without loading all at once</div>
+          <div class="cmd-example">less server.log</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">head / tail</div>
+          <div class="cmd-desc">Shows first or last lines of a file; tail -f for live logs</div>
+          <div class="cmd-example">tail -f app.log</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">nano / vim</div>
+          <div class="cmd-desc">In-terminal text editors for quick edits</div>
+          <div class="cmd-example">vim ~/.bashrc</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon icon-amber">03</span>
+        <span class="section-title">System &amp; Process Monitoring</span>
+      </div>
+      <div class="cmd-grid">
+        <div class="cmd-card">
+          <div class="cmd-name">top / htop</div>
+          <div class="cmd-desc">Real-time view of processes, CPU, and RAM usage</div>
+          <div class="cmd-example">htop</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">ps aux</div>
+          <div class="cmd-desc">Snapshot of all currently running processes</div>
+          <div class="cmd-example">ps aux | grep node</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">kill [PID]</div>
+          <div class="cmd-desc">Terminates a process by its process ID</div>
+          <div class="cmd-example">kill -9 3821</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">df -h</div>
+          <div class="cmd-desc">Shows disk space usage in human-readable format</div>
+          <div class="cmd-example">df -h /</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">free -m</div>
+          <div class="cmd-desc">Displays RAM usage in megabytes</div>
+          <div class="cmd-example">free -m</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon icon-teal">04</span>
+        <span class="section-title">Networking</span>
+      </div>
+      <div class="cmd-grid">
+        <div class="cmd-card">
+          <div class="cmd-name">ping [host]</div>
+          <div class="cmd-desc">Checks connectivity to a server or IP address</div>
+          <div class="cmd-example">ping google.com</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">ip a</div>
+          <div class="cmd-desc">Shows network interfaces and IP addresses</div>
+          <div class="cmd-example">ip a</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">curl [URL]</div>
+          <div class="cmd-desc">Transfers data to/from a server; great for API testing</div>
+          <div class="cmd-example">curl -X GET api/v1</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">wget [URL]</div>
+          <div class="cmd-desc">Downloads files from the internet</div>
+          <div class="cmd-example">wget https://…</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon icon-red">05</span>
+        <span class="section-title">Permissions &amp; Ownership</span>
+      </div>
+      <div class="cmd-grid">
+        <div class="cmd-card">
+          <div class="cmd-name">sudo</div>
+          <div class="cmd-desc">Runs a command with root/admin privileges</div>
+          <div class="cmd-example">sudo apt update</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">chmod</div>
+          <div class="cmd-desc">Changes file access permissions</div>
+          <div class="cmd-example">chmod +x script.sh</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">chown</div>
+          <div class="cmd-desc">Changes file owner and group</div>
+          <div class="cmd-example">chown user:group f</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon icon-purple">06</span>
+        <span class="section-title">Search &amp; Filtering</span>
+      </div>
+      <div class="cmd-grid">
+        <div class="cmd-card">
+          <div class="cmd-name">grep [pat]</div>
+          <div class="cmd-desc">Searches for a string or pattern inside files</div>
+          <div class="cmd-example">grep -r "error" logs/</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-name">find [path]</div>
+          <div class="cmd-desc">Searches for files in a directory hierarchy</div>
+          <div class="cmd-example">find . -name "*.js"</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span># end of file</span>
+    <span class="cursor"></span>
+  </div>
+</div>
