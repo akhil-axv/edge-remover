@@ -1,40 +1,31 @@
 # Linux Commands & Tools
 
-A practical, beginner-friendly collection of Linux command guides and small utilities. The goal is to help you solve common tasks quickly, understand what a command does, and avoid risky copy-paste.
+A practical collection of command guides and small utilities for Linux and Windows. Everything in this project lives in this one repository; Windows-specific files are grouped in the `windows-edge-remover/` folder.
 
-## Guides
+## Linux guides
 
 - [Practical Linux Command Guide](PRACTICAL-LINUX-COMMAND-GUIDE.md) — navigation, files, search, processes, networking, packages, and archives.
+- [Linux Troubleshooting Playbook](LINUX-TROUBLESHOOTING-PLAYBOOK.md) — steps for common disk, network, service, and performance problems.
 - [Git and GitHub Workflow](GIT-AND-GITHUB-WORKFLOW.md) — save changes, use branches, push to GitHub, and recover safely.
 
-## Tools
+## Linux tools
 
-### Linux Health Check
+- [Linux Health Check](linux-health-check.sh) — read-only overview of disk space, memory, load, and failed systemd services. Run with `sh linux-health-check.sh`.
+- [Linux Command Finder](linux-command-finder.sh) — interactive menu that prints common command examples for review. It does not execute them.
 
-`linux-health-check.sh` is a small read-only shell script that gives a quick overview of disk space, memory, load, and failed systemd services.
+## Windows tool
 
-Run it from this repository:
+- [Edge Remover for Windows](windows-edge-remover/) — Windows Forms app source and build script. It asks Windows Package Manager to uninstall Edge through its interactive interface. Build instructions are in the folder README.
 
-```bash
-sh linux-health-check.sh
-```
-
-Or make it executable and run it directly:
-
-```bash
-chmod +x linux-health-check.sh
-./linux-health-check.sh
-```
-
-It does not install packages, change settings, or require root access. It only reports checks supported by the current system. The output stays in your terminal; it does not upload or save system details.
+Windows decides whether Edge can be removed on a device. This tool does not force-delete browser files or edit the registry. The app's `.exe` must be built on Windows with the .NET 8 SDK.
 
 ## Safety notes
 
-- Read a command before running it, especially commands using `sudo`, `rm`, `chmod`, or shell redirection.
+- Read commands before running them, especially those using `sudo`, `rm`, `chmod`, or shell redirection.
 - Review paths before moving or deleting files.
-- Do not paste passwords, API keys, or private tokens into shell commands.
-- Package management commands depend on your Linux distribution.
+- Do not paste passwords, API keys, or private tokens into shell commands or public issue reports.
+- Package management commands and Edge removal availability vary by operating system and region.
 
 ## Contributing
 
-Corrections and clear examples are welcome. If you add a command, explain what it does, include a realistic example, and mention any important risks or distribution differences.
+Corrections and clear examples are welcome. Explain what a command does, include a realistic example, and mention important risks or operating-system differences.
